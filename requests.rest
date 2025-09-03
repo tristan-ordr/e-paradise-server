@@ -1,6 +1,13 @@
 GET http://localhost:3000/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNzU2OTMzMjA0LCJleHAiOjE3NTY5MzMyMzR9.BfsqsMboDlDFOPJAzQcjQNxZ1_G2rgTLO20kSBSWMUk
 
+
+###
+
+GET http://localhost:3000/plants
+Content-Type: application/json
+
+
 ###
 
 POST http://localhost:4000/token

@@ -1,9 +1,22 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const jwt = require('jsonwebtoken')
+// require('dotenv').config()
+// const express = require('express')
+// const app = express()
+// const jwt = require('jsonwebtoken')
+
+
+import express from "express/lib/express.js";
+import jwt from "jsonwebtoken";
+
+import getPlantsData from './data/plants.js'
+
+const app = express();
 
 app.use(express.json());
+
+app.get('/plants', (req, res) => {
+    const plants = getPlantsData()
+    res.json(plants)
+})
 
 const posts = [
     {
