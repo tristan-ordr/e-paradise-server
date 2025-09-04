@@ -4,7 +4,29 @@ import jwt from 'jsonwebtoken'
 import getUsersData from "./data/users.js";
 
 const app = express()
+const allowedOrigins = [
+    'http://localhost:5173'
+];
+
 app.use(express.json());
+
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+
+    if (allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    next();
+});
 
 let refreshTokens = [] // Note: This should be stored permanently in a database!
 

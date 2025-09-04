@@ -1,7 +1,7 @@
 const usersArray = [
     {
         username: 'Jim',
-        password: 'example_password'
+        password: 'password'
     },
 ]
 
