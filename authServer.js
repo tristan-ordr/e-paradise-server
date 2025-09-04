@@ -1,8 +1,9 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const jwt = require('jsonwebtoken')
+import 'dotenv/config'
+import express from 'express';
+import jwt from 'jsonwebtoken'
+import getUsersData from "./data/users.js";
 
+const app = express()
 app.use(express.json());
 
 let refreshTokens = [] // Note: This should be stored permanently in a database!
@@ -26,10 +27,11 @@ app.delete('/logout', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    // Authenticate User
-    // TODO - authenticate the user
-
     const username = req.body.username;
+
+    // Authenticate User
+    // TODO - learn about user authentication...
+    if (authenticateUser(username, req.body.password) === false) return res.sendStatus(401);
 
     const user = {
         name: username
@@ -49,7 +51,14 @@ app.post('/login', (req, res) => {
 function generateAccessToken(user) {
     const expiresIn = '10m' // Regular use case
     const expiresInDemo = '30s' // For teaching purposes
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: expiresInDemo});
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: expiresIn});
+}
+
+function authenticateUser(username, password) {
+    const user = getUsersData().find(user => user.username === username);
+    if (user == null) return false
+
+    return user.password === password;
 }
 
 app.listen(4000);
