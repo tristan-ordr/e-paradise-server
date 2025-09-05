@@ -5,3 +5,6 @@
 /generated/prisma
 
 node_modules/
+
+/dist/
+/data

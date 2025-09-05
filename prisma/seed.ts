@@ -1,5 +1,7 @@
-import { PrismaClient } from "../generated/prisma/client.js";
-import getPlantsData from "../data/plants.js";
+import { PrismaClient } from "@prisma/client/extension";
+
+// @ts-ignore
+import getPlantsData from "../data/plants";
 
 const prisma = new PrismaClient();
 

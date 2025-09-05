@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express from 'express';
 import jwt from 'jsonwebtoken'
-import getUsersData from "./data/users.js";
+import getUsersData from "../data/users.ts";
 import allowClientAccess from "./allowClientAccess.js";
 
 const app = express()
