@@ -3,32 +3,14 @@ import express from 'express';
 import jwt from 'jsonwebtoken'
 
 import getPlantsData from './data/plants.js'
+import allowClientAccess from "./allowClientAccess.js";
 
 const app = express();
 
-const allowedOrigins = [
-    'http://localhost:5173'
-];
-
 app.use(express.json());
 
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
+allowClientAccess(app);
 
-    if (allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    next();
-});
 
 app.get('/plants', (req, res) => {
     const plants = getPlantsData()
