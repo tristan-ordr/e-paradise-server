@@ -8,12 +8,16 @@
     "devStartAuth": "nodemon authServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "seed": "nodemon prisma/seed.js"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^4.0.4",
+    "@prisma/client": "^6.15.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
@@ -21,6 +25,7 @@
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prisma": "^6.15.0"
   }
 }
