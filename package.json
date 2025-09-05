@@ -5,6 +5,15 @@
   "scripts": {
     "devStart": "nodemon src/server.ts",
     "devStartAuth": "nodemon src/authServer.js",
+    "dev": "tsx --watch src/server.ts",
+    "devAuth": "tsx --watch src/authServer.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {
@@ -27,7 +36,9 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "prisma": "^6.15.0",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }

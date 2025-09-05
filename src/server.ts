@@ -2,7 +2,6 @@ import 'dotenv/config'
 import express from 'express';
 import jwt from 'jsonwebtoken'
 
-// import getPlantsData from '../prisma/models/plants.js'
 
 const app = express();
 
@@ -52,4 +51,6 @@ app.get('/plants', (req, res) => {
 //
 // }
 
-app.listen(3000);
+app.listen(3000 , () => {
+    console.log(`Example app listening on port ${3000}`);
+});
