@@ -1,5 +1,5 @@
 import _knex from "#config/knex.js";
-import getPlantsData from "#sql/setup/plants.js";
+import getPlantsData from "#knex/setup/plants.js";
 
 export const seedCategories = () => {
     const initialData = getPlantsData();

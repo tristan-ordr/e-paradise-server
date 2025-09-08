@@ -6,13 +6,13 @@
 export const typeDefs = `#graphql
 # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 type Category {
-    id: Int!,
+    id: ID!,
     name: String!
     plants: [Plant!]
 }
 
 type Plant {
-    id: Int!
+    id: ID!
     name: String!
     description: String
     image: String
@@ -22,9 +22,11 @@ type Plant {
 
 # The "Query" type is special: it lists all of the available queries that
 # clients can execute, along with the return type for each. In this
-# case, the "books" query returns an array of zero or more Books (defined above).
+# case, the "plants" query returns an array of zero or more Plants (defined above).
 type Query {
     categories: [Category!]
+    category(id: ID!): Category
     plants: [Plant!]
+    plant(id: ID!): Plant
 }
 `;

@@ -4,4 +4,5 @@ export interface Plant {
     cost: String
     description: String
     image: String
+    category_id: number
 }

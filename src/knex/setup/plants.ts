@@ -206,6 +206,18 @@ const plantsArray = [
     }
 ];
 
-export default function getPlantsData() {
+export default function getPlantsData(): CategoryData[] {
     return plantsArray;
+}
+
+interface CategoryData {
+    category: String
+    plants: PlantData[]
+}
+
+interface PlantData {
+    name: String
+    cost: String
+    description: String
+    image: String
 }
