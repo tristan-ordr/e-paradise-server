@@ -1,6 +1,6 @@
 import express from 'express';
+import {getCategories, getPlants} from "#sql/categories.js";
 
-import {getCategories, getPlants} from "#categories.js";
 
 const app = express();
 
