@@ -1,6 +1,5 @@
 import express from 'express';
-import {setupCategories, setupPlants} from "#setup/tableDefs.js";
-import {seedCategories} from "#setup/seedData.js";
+
 import {getCategories, getPlants} from "#categories.js";
 
 const app = express();
@@ -28,25 +27,12 @@ const allowClientAccess = (app: any) => {
 };
 allowClientAccess(app);
 
-app.post('/createTables', (req, res) => {
-    // setupCategories();
-    setupPlants();
-    // setupUsers();
-    res.json(200);
-});
-
-app.post('/insertCategories', (req, res) => {
-    seedCategories();
-    res.json(200);
-});
-
 app.get('/categories', async (req, res) => {
     const categories = await getCategories()
     res
         .status(200)
         .send({'data': categories});
 });
-
 
 
 app.get('/plants', async (req, res) => {
