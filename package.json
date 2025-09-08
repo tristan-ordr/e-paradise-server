@@ -25,7 +25,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^5.0.0",
     "@apollo/client": "^4.0.4",
+    "knex": "^3.1.0",
+    "pg": "^8.16.3",
     "@prisma/client": "^6.15.0",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
@@ -36,6 +39,7 @@
     "@eslint/js": "^9.35.0",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.3.1",
     "eslint": "^9.35.0",
     "eslint-plugin-perfectionist": "^4.15.0",
     "nodemon": "^3.1.10",

@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken'
-import getUsersData from "../data/users.ts";
+import getUsersData from "./seed/data/users.ts";
 import allowClientAccess from "./allowClientAccess.js";
 
 const app = express()

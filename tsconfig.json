@@ -44,7 +44,7 @@
   "include": ["**/*.ts"],
   "exclude": ["dist",
     "prisma",
-    "data",
+    "src/seed/data",
     "generated"
   ]
 }
