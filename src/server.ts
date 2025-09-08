@@ -1,68 +1,50 @@
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@as-integrations/express5';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import express from 'express';
-import {getCategories, getPlants} from "#sql/categories.js";
+import http from 'http';
+import cors from 'cors';
+import { typeDefs } from "#schema/typeDefs.js";
+import { resolvers } from "#schema/resolvers.js";
 
 
-const app = express();
+const port = 3000;
 
-app.use(express.json());
 
-const allowClientAccess = (app: any) => {
-    // app.use((req, res, next) => {
-    //     const origin = req.headers.origin;
-    //
-    //     if (allowedOrigins.includes(origin)) {
-    //         res.header('Access-Control-Allow-Origin', origin);
-    //     }
-    //
-    //     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    //
-    //     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    //
-    //     if (req.method === 'OPTIONS') {
-    //         return res.status(200).end();
-    //     }
-    //
-    //     next();
-    // });
-};
-allowClientAccess(app);
+interface MyContext {
+    token?: string;
+}
 
-app.get('/categories', async (req, res) => {
-    const categories = await getCategories()
-    res
-        .status(200)
-        .send({'data': categories});
+
+export const app = express();
+
+const httpServer = http.createServer(app);
+
+const server = new ApolloServer<MyContext>({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
+// Ensure we wait for our server to start
+await server.start();
 
-app.get('/plants', async (req, res) => {
-    const plants = await getPlants()
-    res
-        .status(200)
-        .send({'data': plants});
-});
+// Set up our Express middleware to handle CORS, body parsing,
+// and our expressMiddleware function.
+app.use(
+    '/',
+    cors<cors.CorsRequest>(),
+    express.json(),
+    // expressMiddleware accepts the same arguments:
+    // an Apollo Server instance and optional configuration options
+    expressMiddleware(server, {
+        context: async ({ req }) => ({ token: req.headers.token }),
+    }),
+);
 
+await new Promise<void>((resolve) =>
+    httpServer.listen({ port: port }, resolve),
+);
 
+console.log(`🚀 Server ready at http://localhost:${port}/`);
 
-// app.get('/posts', authenticateToken, (req, res) => {
-//     res.json(posts.filter(post => post.username === req.user.name));
-// })
-
-
-// function authenticateToken(req, res, next) {
-//     const authHeader = req.headers['authorization'];
-//     const token = authHeader && authHeader.split(' ')[1];
-//     if (token == null) return res.sendStatus(401);
-//
-//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-//         if (err) return res.sendStatus(403)
-//         req.user = user
-//         next()
-//     })
-//
-// }
-
-const port = process.env.PORT || "9001"
-app.listen( port, () => {
-    console.log(`Example app listening on port ${port}`);
-});

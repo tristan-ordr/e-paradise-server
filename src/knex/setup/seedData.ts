@@ -1,12 +1,13 @@
-import getPlantsData from "./data/plants.js";
 import _knex from "#config/knex.js";
+import getPlantsData from "#sql/setup/plants.js";
 
 export const seedCategories = () => {
-    const categoryData = getPlantsData().map (category => ({
+    const initialData = getPlantsData();
+    const categoryData = initialData.map (category => ({
         'name': category.category
     }));
 
-    const plantData = getPlantsData().flatMap ( category => {
+    const plantData = initialData.flatMap ( category => {
         return category.plants.map( plant => ({
             ...plant,
             category: category.category

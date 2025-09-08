@@ -1,32 +1,60 @@
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
+import {app} from "#server.js";
+import {getCategories, getPlants} from "#knex/select.js";
 
-const typeDefs = `#graphql
-# Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-# This "Book" type defines the queryable fields for every book in our data source.
-type Category {
-    id: Int!,
-    name: String!
-    plants: [Plant!]
-}
 
-type Plant { 
-    id: Int!
-    name: String!
-    description: String
-    image: String
-    cost: String
-    category: Category!
-}
+const allowClientAccess = (app: any) => {
+    // app.use((req, res, next) => {
+    //     const origin = req.headers.origin;
+    //
+    //     if (allowedOrigins.includes(origin)) {
+    //         res.header('Access-Control-Allow-Origin', origin);
+    //     }
+    //
+    //     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    //
+    //     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    //
+    //     if (req.method === 'OPTIONS') {
+    //         return res.status(200).end();
+    //     }
+    //
+    //     next();
+    // });
+};
+allowClientAccess(app);
 
-# The "Query" type is special: it lists all of the available queries that
-# clients can execute, along with the return type for each. In this
-# case, the "books" query returns an array of zero or more Books (defined above).
-type Query {
-    categories: [Category!]
-    plants: [Plant!]
-}
-`;
+app.get('/categories', async (req, res) => {
+    const categories = await getCategories()
+    res
+        .status(200)
+        .send({'data': categories});
+});
+
+
+app.get('/plants', async (req, res) => {
+    const plants = await getPlants()
+    res
+        .status(200)
+        .send({'data': plants});
+});
+
+
+
+// app.get('/posts', authenticateToken, (req, res) => {
+//     res.json(posts.filter(post => post.username === req.user.name));
+// })
+
+
+// function authenticateToken(req, res, next) {
+//     const authHeader = req.headers['authorization'];
+//     const token = authHeader && authHeader.split(' ')[1];
+//     if (token == null) return res.sendStatus(401);
+//
+//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//         if (err) return res.sendStatus(403)
+//         req.user = user
+//         next()
+//     })
+//
+// }
+
