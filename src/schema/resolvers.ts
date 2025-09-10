@@ -12,12 +12,14 @@ export const resolvers = {
 
         plants: async (): Promise<Plant[]> => await _knex
             .select('id', 'name', 'description', 'image', 'cost', 'category_id')
-            .from('Plants'),
+            .from('Plants')
+            .orderBy('id'),
 
         category: async(_: any, args: { id: number; }): Promise<Category> => await _knex
             .first('id', 'name')
             .from('Categories')
-            .where({id: args.id}),
+            .where({id: args.id})
+            .orderBy('id'),
 
         plant: async (_: any, args: {id: number}): Promise<Plant> => await _knex
             .first('id', 'name', 'description', 'image', 'cost', 'category_id')
@@ -56,6 +58,37 @@ export const resolvers = {
             return _knex
                 .select('id', 'name')
                 .from('Categories')
-        }
+        },
+
+        createPlant: async(_: any, args: { name: string, cost: string, image: string, description: string, category_id: number }): Promise<Plant> => {
+            const [newPlant] = await _knex
+                .insert({
+                    name: args.name,
+                    description: args.description,
+                    image: args.image,
+                    cost: args.cost,
+                }, ['id', 'name', 'description', 'image', 'cost', 'category_id'])
+                .into('Plants')
+
+            return newPlant
+        },
+
+        updatePlant: async (_: any, args: {id: number, edits: {name: string, description: string, image: string, cost: string, category_id: number}}): Promise<Plant> => {
+            const [updated] = await _knex('Plants')
+                .where({id: args.id})
+                .update(args.edits, ['id', 'name', 'description', 'image', 'cost', 'category_id'])
+
+            return updated
+        },
+
+        deletePlant: async(_: any, args: {id: number}): Promise<Plant> => {
+            await _knex('Plants')
+                .where({'id': args.id})
+                .del()
+
+            return _knex
+                .select('id', 'name', 'description', 'image', 'cost', 'category_id')
+                .from('Plants')
+        },
     }
 };

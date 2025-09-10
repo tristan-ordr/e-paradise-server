@@ -24,10 +24,21 @@ export type Category = {
   plants?: Maybe<Array<Plant>>;
 };
 
+export type EditPlantInput = {
+  category_id?: InputMaybe<Scalars['ID']['input']>;
+  cost?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: Category;
+  createPlant: Plant;
   deleteCategories?: Maybe<Array<Category>>;
+  deletePlant?: Maybe<Array<Plant>>;
+  updatePlant: Plant;
 };
 
 
@@ -36,8 +47,24 @@ export type MutationCreateCategoryArgs = {
 };
 
 
+export type MutationCreatePlantArgs = {
+  plant: PlantInput;
+};
+
+
 export type MutationDeleteCategoriesArgs = {
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+
+export type MutationDeletePlantArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdatePlantArgs = {
+  edits: EditPlantInput;
+  id: Scalars['ID']['input'];
 };
 
 export type Plant = {
@@ -74,11 +101,6 @@ export type QueryCategoryArgs = {
 
 export type QueryPlantArgs = {
   id: Scalars['ID']['input'];
-};
-
-export type AdditionalEntityFields = {
-  path?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -154,76 +176,29 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
+  EditPlantInput: EditPlantInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Plant: ResolverTypeWrapper<Plant>;
   PlantInput: PlantInput;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
-  AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Boolean: Scalars['Boolean']['output'];
   Category: Category;
+  EditPlantInput: EditPlantInput;
   ID: Scalars['ID']['output'];
-  String: Scalars['String']['output'];
   Mutation: Record<PropertyKey, never>;
   Plant: Plant;
   PlantInput: PlantInput;
   Query: Record<PropertyKey, never>;
-  AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: Scalars['Boolean']['output'];
+  String: Scalars['String']['output'];
 };
-
-export type UnionDirectiveArgs = {
-  discriminatorField?: Maybe<Scalars['String']['input']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
-};
-
-export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type AbstractEntityDirectiveArgs = {
-  discriminatorField: Scalars['String']['input'];
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
-};
-
-export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EntityDirectiveArgs = {
-  embedded?: Maybe<Scalars['Boolean']['input']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>;
-};
-
-export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type ColumnDirectiveArgs = {
-  overrideType?: Maybe<Scalars['String']['input']>;
-};
-
-export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type IdDirectiveArgs = { };
-
-export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type LinkDirectiveArgs = {
-  overrideType?: Maybe<Scalars['String']['input']>;
-};
-
-export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EmbeddedDirectiveArgs = { };
-
-export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type MapDirectiveArgs = {
-  path: Scalars['String']['input'];
-};
-
-export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -233,7 +208,10 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'name'>>;
+  createPlant?: Resolver<ResolversTypes['Plant'], ParentType, ContextType, RequireFields<MutationCreatePlantArgs, 'plant'>>;
   deleteCategories?: Resolver<Maybe<Array<ResolversTypes['Category']>>, ParentType, ContextType, Partial<MutationDeleteCategoriesArgs>>;
+  deletePlant?: Resolver<Maybe<Array<ResolversTypes['Plant']>>, ParentType, ContextType, RequireFields<MutationDeletePlantArgs, 'id'>>;
+  updatePlant?: Resolver<ResolversTypes['Plant'], ParentType, ContextType, RequireFields<MutationUpdatePlantArgs, 'edits' | 'id'>>;
 };
 
 export type PlantResolvers<ContextType = any, ParentType extends ResolversParentTypes['Plant'] = ResolversParentTypes['Plant']> = {
@@ -259,15 +237,3 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
 };
 
-export type DirectiveResolvers<ContextType = any> = {
-  union?: UnionDirectiveResolver<any, any, ContextType>;
-  abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>;
-  entity?: EntityDirectiveResolver<any, any, ContextType>;
-  column?: ColumnDirectiveResolver<any, any, ContextType>;
-  id?: IdDirectiveResolver<any, any, ContextType>;
-  link?: LinkDirectiveResolver<any, any, ContextType>;
-  embedded?: EmbeddedDirectiveResolver<any, any, ContextType>;
-  map?: MapDirectiveResolver<any, any, ContextType>;
-};
-
-import { ObjectId } from 'mongodb';

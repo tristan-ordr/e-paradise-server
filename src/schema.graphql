@@ -13,13 +13,6 @@ type Plant {
     category: Category!
 }
 
-input PlantInput {
-    name: String!
-    description: String
-    image: String
-    cost: String
-    category_id: ID!
-}
 
 # The "Query" type is special: it lists all of the available queries that
 # clients can execute, along with the return type for each. In this
@@ -34,4 +27,23 @@ type Query {
 type Mutation {
     createCategory(name: String!): Category!
     deleteCategories(ids: [ID!]): [Category!]
+    createPlant(plant: PlantInput!): Plant!
+    updatePlant(id: ID!, edits: EditPlantInput!): Plant!
+    deletePlant(id: ID!): [Plant!]
+}
+
+input PlantInput {
+    name: String!
+    description: String
+    image: String
+    cost: String
+    category_id: ID!
+}
+
+input EditPlantInput {
+    name: String
+    description: String
+    image: String
+    cost: String
+    category_id: ID
 }
