@@ -26,20 +26,36 @@ export const resolvers = {
     },
 
     Category: {
-        async plants(parent: Category): Promise<Plant[]> {
-            return _knex
+        plants: async (parent: Category): Promise<Plant[]> => await _knex
                 .select('id', 'name', 'description', 'image', 'cost', 'category_id')
                 .from('Plants')
-                .where({category_id: parent.id});
-        }
+                .where({category_id: parent.id})
     },
 
     Plant: {
-        async category(parent: Plant): Promise<Category> {
-            return _knex
+        category: async (parent: Plant): Promise<Category> => await _knex
                 .first('id', 'name')
                 .from('Categories')
                 .where({'id': parent.category_id})
+    },
+
+    Mutation: {
+        createCategory: async (_: any, args: { name: string; }): Promise<Category> => {
+            const [newCategory] = await _knex
+                .insert({name: args.name}, ['id', 'name'])
+                .into('Categories')
+
+            return newCategory
+        },
+
+        deleteCategories: async (_: any, args: {ids: number[]}): Promise<Category[]> => {
+            await _knex('Categories')
+                .whereIn('id', args.ids)
+                .del()
+
+            return _knex
+                .select('id', 'name')
+                .from('Categories')
         }
     }
 };

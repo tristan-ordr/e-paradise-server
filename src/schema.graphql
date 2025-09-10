@@ -13,6 +13,14 @@ type Plant {
     category: Category!
 }
 
+input PlantInput {
+    name: String!
+    description: String
+    image: String
+    cost: String
+    category_id: ID!
+}
+
 # The "Query" type is special: it lists all of the available queries that
 # clients can execute, along with the return type for each. In this
 # case, the "plants" query returns an array of zero or more Plants (defined above).
@@ -21,4 +29,9 @@ type Query {
     category(id: ID!): Category
     plants: [Plant!]
     plant(id: ID!): Plant
+}
+
+type Mutation {
+    createCategory(name: String!): Category!
+    deleteCategories(ids: [ID!]): [Category!]
 }

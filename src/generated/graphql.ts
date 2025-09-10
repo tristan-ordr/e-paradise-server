@@ -1,4 +1,4 @@
-import type {GraphQLResolveInfo} from 'graphql';
+import { GraphQLResolveInfo } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -24,6 +24,22 @@ export type Category = {
   plants?: Maybe<Array<Plant>>;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  createCategory: Category;
+  deleteCategories?: Maybe<Array<Category>>;
+};
+
+
+export type MutationCreateCategoryArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteCategoriesArgs = {
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
 export type Plant = {
   __typename?: 'Plant';
   category: Category;
@@ -32,6 +48,14 @@ export type Plant = {
   id: Scalars['ID']['output'];
   image?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
+};
+
+export type PlantInput = {
+  category_id: Scalars['ID']['input'];
+  cost?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type Query = {
@@ -133,7 +157,9 @@ export type ResolversTypes = {
   Category: ResolverTypeWrapper<Category>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Plant: ResolverTypeWrapper<Plant>;
+  PlantInput: PlantInput;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -144,7 +170,9 @@ export type ResolversParentTypes = {
   Category: Category;
   ID: Scalars['ID']['output'];
   String: Scalars['String']['output'];
+  Mutation: Record<PropertyKey, never>;
   Plant: Plant;
+  PlantInput: PlantInput;
   Query: Record<PropertyKey, never>;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: Scalars['Boolean']['output'];
@@ -203,6 +231,11 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
   plants?: Resolver<Maybe<Array<ResolversTypes['Plant']>>, ParentType, ContextType>;
 };
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'name'>>;
+  deleteCategories?: Resolver<Maybe<Array<ResolversTypes['Category']>>, ParentType, ContextType, Partial<MutationDeleteCategoriesArgs>>;
+};
+
 export type PlantResolvers<ContextType = any, ParentType extends ResolversParentTypes['Plant'] = ResolversParentTypes['Plant']> = {
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
   cost?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -221,6 +254,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type Resolvers<ContextType = any> = {
   Category?: CategoryResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Plant?: PlantResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
@@ -236,3 +270,4 @@ export type DirectiveResolvers<ContextType = any> = {
   map?: MapDirectiveResolver<any, any, ContextType>;
 };
 
+import { ObjectId } from 'mongodb';
