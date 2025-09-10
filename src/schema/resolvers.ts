@@ -60,13 +60,14 @@ export const resolvers = {
                 .from('Categories')
         },
 
-        createPlant: async(_: any, args: { name: string, cost: string, image: string, description: string, category_id: number }): Promise<Plant> => {
+        createPlant: async(_: any, args: { plant: Plant }): Promise<Plant> => {
             const [newPlant] = await _knex
                 .insert({
-                    name: args.name,
-                    description: args.description,
-                    image: args.image,
-                    cost: args.cost,
+                    name: args.plant.name,
+                    description: args.plant.description,
+                    image: args.plant.image,
+                    cost: args.plant.cost,
+                    category_id: args.plant.category_id
                 }, ['id', 'name', 'description', 'image', 'cost', 'category_id'])
                 .into('Plants')
 
