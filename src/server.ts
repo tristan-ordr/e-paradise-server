@@ -4,12 +4,14 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-import { typeDefs } from "#schema/typeDefs.js";
+import { readFileSync } from 'fs'
+
 import { resolvers } from "#schema/resolvers.js";
 
 
 const port = 3000;
 
+const typeDefs = readFileSync('./src/schema.graphql', { encoding: 'utf-8' });
 
 interface MyContext {
     token?: string;
@@ -32,7 +34,7 @@ await server.start();
 // Set up our Express middleware to handle CORS, body parsing,
 // and our expressMiddleware function.
 app.use(
-    '/',
+    '/api/graphql',
     cors<cors.CorsRequest>(),
     express.json(),
     // expressMiddleware accepts the same arguments:
